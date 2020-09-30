@@ -3,10 +3,14 @@ package com.pluralsight.candycoded;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,6 +24,7 @@ public class DetailActivity extends AppCompatActivity {
     public static final String SHARE_DESCRIPTION = "Look at this delicious candy from Candy Coded - ";
     public static final String HASHTAG_CANDYCODED = " #candycoded";
     String mCandyImageUrl = "";
+    String joined = SHARE_DESCRIPTION + mCandyImageUrl + HASHTAG_CANDYCODED;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,18 @@ public class DetailActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        createShareIntent();
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void createShareIntent() {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, joined);
+        startActivity(shareIntent);
+    }
     // ***
     // TODO - Task 4 - Share the Current Candy with an Intent
     // ***
